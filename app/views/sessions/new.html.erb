@@ -1,0 +1,137 @@
+<div class="row">
+	<div class="primera text-column col m5">
+		<div class="card z-depth-2 col m10 offset-m2">
+			<div class="card-content">
+				<div class="caption left-align">
+					<h4>Vendemos tu depa</h4>
+					<h5>Comisión del 2%,<br>profesional, fácil, seguro.</h5>
+				</div>
+				<div class="card-action center" id="card-action">
+	              <a href="#!" onclick="Materialize.showStaggeredList('#staggered-test')">Nosotros</a>
+	              <a href="#operacion">Cómo funciona</a>
+	              <a href="#colonias">Colonias</a>
+	  			</div>
+	  		</div>
+			<ul class="collapsible form_within_card z-depth-0" data-collapsible="accordion">
+    			<li>
+      				<div class="collapsible-header"><i class="material-icons">today</i>Agenda una cita</div>
+      				<div class="collapsible-body">
+      					<div class="register_form">
+	      					<h6>Registro de usuario (paso 1 de 3)</h6>
+							<div id="registration_errors"></div>
+							<form id="registration_form" action="/users" data-remote="true" method="post">
+								<div class="row">
+									<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+									<div class="input-field col s5">
+										<input id="name" type="text" class="validate" name="user[name]">
+										<label for="name">Nombre*</label>
+									</div>
+									<div class="input-field col s7">
+											<input id="apellidos" type="text" class="validate" name="user[last_name]">
+											<label for="apellidos" data-error="Es nesesario ingresar sus apellidos.">Apellidos*</label>
+									</div>
+									<div class="input-field col s12">
+										<input id="email" type="text" class="validate" name="user[email]">
+										<label for="email">Correo electrónico*</label>
+									</div>
+									<div class="row">
+										<div class="input-field col s7 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Extensión de 10 dígitos.">
+											<input id="phone_numer" type="text" class="validate" name="user[phone_number]" length="10">
+											<label for="phone_numer">Teléfono*</label>
+										</div>
+											<input class="with-gap light-green accent-4" name="user[phone_option]" value="mobile" type="radio" id="test1" checked="checked"/>
+											<label for="test1">Celular</label>
+											<input class="with-gap light-green accent-4" name="user[phone_option]" value="other" type="radio" id="test2" />
+											<label for="test2">Fijo</label>
+										<div class="input-field col s6 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Extensión mínima de 8 caracteres, debe incluir letras y números.">
+											<input id="password" type="password" class="validate" name="user[password]">
+											<label for="password">Contraseña*</label>
+										</div>
+										<div class="input-field col s6">
+											<input id="password_confirmation" type="password" class="validate" name="user[password_confirmation]">
+											<label for="password_confirmation" data-error="wrong">Confirmar contraseña*</label>
+										</div>
+										<div class="col s12">
+											<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light right" type="submit"><i class="material-icons">send</i></button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+      				</div>
+    			</li>
+    			<li>
+      				<div class="collapsible-header"><i class="material-icons">message</i>Pregúntanos</div>
+      				<div class="collapsible-body"><p>También puedes consultar nuestra sección de preguntas frecuentes,<br> o llamarnos al 5544545312.</p></div>
+    			</li>
+  			</ul>
+		</div>
+	</div>
+	<div id="login" class="text-column col m6"  style="display:none">
+		<div class="row">
+			<div id="login-card" class="card z-depth-2 col m10 right">
+				<div class="card-content">
+					<a href="#" onclick="login.style.display='none'"><i class="material-icons right">close</i></a>
+					<div class="card-form greent-text">
+						<div id="login_errors"></div>
+						<form id="login_form" action="/users/login" data-remote="true" method="post">
+							<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+						    <div class="row">
+								<div class="input-field col s6">
+							        <input id="email" type="text" class="validate" name="user[email]">
+							        <label for="email">Correo electrónico*</label>
+							    </div>				
+							    <div class="input-field col s4">
+							      	<input id="password" type="text" class="validate" name="user[password]">
+							      	<label for="password">Contraseña*</label>
+							    </div>
+							    <div class="col 2">
+									<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light right" type="submit"><i class="material-icons">send</i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<div class="primera text-column col m6">
+		<ul id="staggered-test">
+			<li id="transparent">
+				<div class="section-content">
+					<div id="nosotros" name="nosotros">
+						<p class="flow-text">
+							<span class="keyword">Primera Raíz</span> es un nuevo servicio. Queremos transformar la forma de vender departamentos en la Ciudad de México, ofrecer atención de excelencia y cobrar menos que las agencias de bienes raíces tradicionales.
+						</p>
+					</div>
+					<blockquote>
+				     	<h5>Las agencias tradicionales cobran entre 4% y 6%<br>nuestra comisión en la más baja del mercado</h5>
+				    </blockquote>
+					<div>
+						<p class="flow-text">
+							Aprovechamos al máximo la tecnología y perfeccionamos cada proceso para lograr los mejores precios y tiempos de venta.
+						</p>
+					</div>
+					<div class="row">
+					</div>
+				</div>
+			</li>
+			<li id="transparent">
+				<div class="card white lighten-4 z-depth-2 collection col m8 offset-m4">
+					<div class="card-content">
+						<div class="row">
+							<div class="col s3">
+								<img src="/assets/roberto.jpg" class="circle small responsive-img">
+							</div>
+							<div class="col s8">
+					      		<span class="title bold">Roberto Valladares</span>
+					      		<p>Fundador de Primera Raíz</p>
+					      		</div>
+					      	</div>
+			      		</div>
+		      		</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+

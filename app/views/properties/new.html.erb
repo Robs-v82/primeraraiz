@@ -1,0 +1,130 @@
+<script>
+		// add property
+		$(document).ready(function() {
+			$('#property_form').submit(function() {
+				$.post(
+					'/properties',
+					$(this).serialize(),
+					function(data) {
+						if ("property_id" in data) {
+							$("#property_card").slideUp();
+							$("#appointment_card").slideDown();
+						}
+						else {
+							var array = data.errors;
+							var newHTML = [];
+							for (var i = 0; i < array.length; i++) {
+							    newHTML.push('<li class="red-text">' + array[i] + '</li>');
+							}
+							$("#property_errors").html("<div class='row'><ul>"+newHTML.join("")+"</ul></div>");
+						}
+					},
+					"json"
+				)
+				return false;
+			})
+		})
+		// add appointment
+		$(document).on("click", "#appointment_form", function() {
+			$('#appointment_form').submit(function() {
+				$.post(
+					'/appointments',
+					$(this).serialize(),
+					function(data) {
+						console.log(data)
+						if ("property_id" in data) {
+							var property_id = data['property_id']
+							url = "/properties/"+property_id;
+							$( location ).attr("href", url);							
+						}
+						else {
+							var array = data.errors;
+							var newHTML = [];
+							for (var i = 0; i < array.length; i++) {
+							    newHTML.push('<li class="red-text">' + array[i] + '</li>');
+							}
+							$("#appointment_errors").html("<div class='row'><ul>"+newHTML.join("")+"</ul></div>");
+						}
+					},
+					"json"
+				)
+				return false;
+			})
+		})
+</script>
+
+<div class="row main">
+	<div class=" primera text-column col m6">
+		<div id="property_card" class="card z-depth-2 col m10 offset-m2">
+			<div class="card-content">
+				<h5>Información de tu propiedad</h5>
+				<h6>(paso 2 de 3)</h6>
+				<div id="property_errors"></div>
+				<form id="property_form" action="/properties" method="post">
+					<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+					<div class="input-field col s6">
+						<input id="street" type="text" class="validate" name="property[street]">
+						<label for="street">Calle*</label>
+					</div>
+					<div class="input-field col s3">
+						<input id="number" type="text" class="validate" name="property[number]">
+						<label for="number">No. exterior*</label>
+					</div>
+					<div class="input-field col s3">
+						<input id="unit" type="text" class="validate" name="property[unit]">
+						<label for="unit">No. interior*</label>
+					</div>
+					<div class="input-field col s12 newline">
+						<input id="owned_by" type="text" class="validate" name="property[owned_by]" value="<%= current_user.name%> <%= current_user.last_name%>">
+						<label for="street">Nombre completo del propietario (importante: modifique si es distinto al usuario)*</label>
+					</div>
+					<div class="input-field col s12">
+						<p >Colonia*</p>
+						<select id="neighborhood" class="browser-default" name="property[neighborhood_id]">
+							<% @neighborhoods.each do |neighborhood| %>
+								<option value="<%= neighborhood.id %>"><%= neighborhood.name %></option>
+							<% end %>
+						</select>
+					</div>
+					<div class="row">
+						<div class="col s12">
+							<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light right" type="submit"><i class="material-icons">send</i></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="primera text-column col m6">
+		<div id="appointment_card" class="card z-depth-2 col m10" style="display:none">
+			<div class="card-content">
+				<h5>Agenda tu cita</h5>
+				<h6>(paso 3 de 3)</h6>
+				<div id="appointment_errors"></div>
+				<form id="appointment_form">
+				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+					<input type="date" name="appointment[date]">
+					<select id="time" class="browser-default" name="appointment[time]">
+						<% @working_hours.each do |hour| %>
+							<option value="<%= hour %>"><%= hour %></option>
+						<% end %>
+					</select>
+					<div class="input-field">
+						<p>El día previo a tu cita nos pondremos en contacto contigo para confirmar (es indispensable que nos respondas, de lo contrario se cancelará tu cita). ¿Cómo prefieres que te contactemos?</p>
+						<input class="with-gap" name="appointment[contact]" value="whatsApp" type="radio" id="option1" checked="checked"/>
+						<label for="option1">WhatsApp</label>	
+						<input class="with-gap" name="appointment[contact]" value="phone_call" type="radio" id="option2" />
+						<label for="option2">Llamada telefónica</label>			
+						<input class="with-gap" name="appointment[contact]" value="email" type="radio" id="option3" />
+						<label for="option3">Correo electrónico</label>
+					</div>
+					<div class="row">
+						<div class="col s12">
+							<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light right" type="submit"><i class="material-icons">send</i></button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>	
+</div>

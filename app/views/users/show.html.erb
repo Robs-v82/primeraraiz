@@ -1,0 +1,83 @@
+
+
+<div class="row">
+	<div class="primera col m5 offset-m1">
+	<h3></h3>
+		<div class="card z-depth-2">
+			<div class="card-content">
+				<h5>Departamento en <%=@property.street%></h5>
+				<ul class="colection">
+					<table>
+						<thead>
+							<tr>
+								<th data-field="status">
+									Estatus
+								</th>
+								<th data-field="date">
+									Día
+								</th>
+								<th data-field="time">
+									Hora
+								</th>
+								<th data-field="actions" cass="right">
+									Acciones
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>
+								<% if @appointment.status == "agendada" %>
+									<p class="yellow-text text-accent-4" style="display:inline-block">Agendada</p>
+								<% end %>
+								<% if @appointment.status == "pendiente" %>
+									<p class="orange-text text-accent-4">Confirma</p>
+								<% end %>
+								<% if @appointment.status == "confirmada" %>
+									<p class="green-text text-accent-4">Confirmada</p>
+								<% end %>
+								</td>
+								<td>
+									<span class="title"><%=@appointment.date%></span>
+								</td>
+								<td>
+									<%= @appointment.time.strftime("%l:%M %p")%>
+								</td>
+								<td>
+									<a href="#!"><i class="material-icons right">not_interested</i></a>
+									<a href="#!"><i class="material-icons right">today</i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="primera col m3 offset-m2">
+		<h5>Tu agente:</h5>
+		<div class="card">
+			<div class="card-image waves-effect waves-block waves-light">
+			 	<img class="activator" src="/assets/<%= @agent.last_name %>.png">
+			</div>
+			<div class="card-content">
+			 	<span class="card-title activator grey-text text-darken-4"><%=@agent.name%> <%= @agent.last_name%><i class="material-icons right">more_vert</i></span>
+				<p><i class="tiny material-icons">email</i> <a href="#"><%=@agent.email%></a></p>
+				<p><i class="tiny material-icons">phone</i> <a href="#"><%=@agent.mobile_phone%></a></p>
+			</div>
+			<div class="card-reveal">
+				<span class="card-title grey-text text-darken-4"><%=@agent.name%> <%= @agent.last_name%><i class="material-icons right">close</i></span>
+				<h6>Lo que otros usuarios comentan de <%= @agent.name %>:</h6>
+				<% if @agent_comments %>
+					<ul class="right">
+						<% @agent_comments.each do |comment| %>
+							<li>"<%= comment.content%>"</li>
+							<li class="light"><%= comment.created_at.strftime("%B, %Y")%></li>
+							<br>
+						<% end %>
+					</ul>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
