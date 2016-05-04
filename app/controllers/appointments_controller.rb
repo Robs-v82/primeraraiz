@@ -3,6 +3,9 @@ class AppointmentsController < ApplicationController
 	def create
 		appointment_info = appointment_params
 		appointment_info.store("property_id", session[:property_id])
+		pdf = StringIO.new(generate_pdf("appointments/contract.html.erb"))
+		puts 'XXxx'*100, pdf
+		appointment_info.store("avatar", pdf)
 		new_appointment = Appointment.new(appointment_info)
 		if new_appointment.valid?
 			new_appointment.save
@@ -21,6 +24,35 @@ class AppointmentsController < ApplicationController
 		redirect_to "/properties/#{session[:property_id]}"
 	end
 
+	def update
+		appointment_id = (params[:id])
+		if Appointment.update(appointment_id, date:update_params[:date], time:update_params[:time]).valid?
+			newdate = Appointment.find(params[:id]).date
+			render json: {appointment_date:"#{newdate}"}
+		else
+			errors = Appointment.update(appointment_id, date:update_params[:date], time:update_params[:time]).errors.full_messages
+			render json: {errors:errors}
+		end
+
+	end
+
+	def generate_pdf (pdf) 
+		html = render_to_string_with_wicked_pdf(
+			:pdf => pdf,
+			:template => pdf,
+			:layout => 'pdf.html.erb',
+			:encoding => 'UTF-8',
+			:page_size        => 'A4',
+			:dpi              => '300',
+			:print_media_type => true,
+			:no_background    => true,
+			:margin => {
+			  :top => 50,
+			  :bottom => 25
+			},
+		)
+	end
+
   	private
 	  	def appointment_params
 	  		params.require(:appointment).permit(:date, :time, :contact)
@@ -28,5 +60,9 @@ class AppointmentsController < ApplicationController
 
 	  	def confirm_params
 	  		params.require(:appointment).permit(:id)
+	  	end
+
+	  	def update_params
+	  		params.require(:appointment).pemit(:date, :time)
 	  	end
 end

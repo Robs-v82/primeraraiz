@@ -32,6 +32,7 @@ class PropertiesController < ApplicationController
 		@properties.each do |property|
 			property_data = appointments_data = ActiveRecord::Base.connection.execute("SELECT appointments.id AS appointment_id, appointments.status AS status, appointments.date AS date, appointments.time AS time, properties.street AS street FROM appointments JOIN properties ON appointments.property_id = properties.id WHERE properties.id = #{property}")
 			@appointments << property_data
+		end
 		@property = Property.find(session[:property_id])
 		@appointment = Appointment.find_by_property_id(@property[:id])
 		t = Time.now
@@ -46,8 +47,19 @@ class PropertiesController < ApplicationController
 		agent_integer = @agent.rating.to_i
 		@blank_stars = 5 - agent_integer
 		@stars = agent_integer
-		@adds = @property.adds		
+		add_arr = ["metroscubicos","segundamano","inmuebles-24","lamudi"]
+		@adds = []
+		add_arr.each do |x|
+			add = Add.find_by_website(x) 
+			if add.nil?
+				@adds << {status: "inactive", file:x+".png"}
+			else
+				@adds << {status: "active", file:x+"_active.png", url:add.url}
+			end
 		end
+		@working_hours = []
+		(8..20).each {|x| @working_hours << "#{x}:00"}
+		@dummy_appointment = Appointment.new
 	end
 
 	def change
@@ -56,9 +68,14 @@ class PropertiesController < ApplicationController
 	end
 
 	def destroy
-		Property.destroy(params[:id])
-		session[:property_id] = User.find(session[:user_id]).properties.last.id
-		redirect_to "/properties/#{session[:property_id]}"
+		Property.destroy(params[:id]) 
+		if current_user.properties.any?
+			session[:property_id] = User.find(session[:user_id]).properties.last.id
+			redirect_to "/properties/#{session[:property_id]}"
+		else
+			current_user.destroy
+			redirect_to "/users/logout"
+		end
 	end
 
 	private

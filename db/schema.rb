@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160428210723) do
+ActiveRecord::Schema.define(version: 20160502045216) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,11 @@ ActiveRecord::Schema.define(version: 20160428210723) do
     t.integer  "property_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "status",       default: "agendada"
+    t.string   "status",              default: "agendada"
+    t.string   "avatar_file_name"
+    t.string   "avatar_content_type"
+    t.integer  "avatar_file_size"
+    t.datetime "avatar_updated_at"
   end
 
   add_index "appointments", ["property_id"], name: "index_appointments_on_property_id", using: :btree

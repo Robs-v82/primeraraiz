@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   get 'appointments/create'
 
+  get 'sessions/slider' => 'sessions#slider'
   get 'properties/new'
   get 'properties/change/:id' => 'properties#change'
 

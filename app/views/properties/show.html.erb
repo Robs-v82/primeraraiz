@@ -1,6 +1,15 @@
 <script>
+	$(document).ready(function(){
+		// the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+		$('.modal-trigger').leanModal();
+	});
 	$(document).on(function(){
 		$('.tooltipped').tooltip({delay: 50});
+	});
+	$(document).ready(function() {
+		$('#update_trigger').click(function(){
+			$('#appointmen_update').slideDown();
+		});
 	});
 </script>
 <div class="row">
@@ -19,7 +28,7 @@
 		</div>
 		<div id="#property_card" class="card z-depth-1">
 			<div class="card-content">
-				<h5>Tus citas:</h5>
+				<h6 class="bold light-green-text text-darken-3">TUS CITAS</h6>
 				<ul class="colection">
 					<table>
 						<thead>
@@ -61,7 +70,7 @@
 									<% if @appointment.status == "pendiente" %>
 										<div class="col right">
 											<form action="/appointments/confirm/<%=@appointment.id%>" method="post">
-												<input type="hidden" name="authenticity_token" value="form_authenticity_token">
+												<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
 												<input type="hidden" name="appointment[id]" value="<%=@appointment.id%>">
 												<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light red right small right tooltipped" data-tooltip="Confirmar" type="submit" name="action"><i class="material-icons right">done</i>
 				  								</a>
@@ -71,16 +80,15 @@
 									<% end %>
 									<div class="col right">
 										<form action="/properties/<%=session[:property_id]%>" method="post">
-											<input type="hidden" name="authenticity_token" value="form_authenticity_token">
 											<input type="hidden" name="_method" value="delete">
+											<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
 											<button class="red accent-2 btn-floating btn-small waves-effect waves-light red right small right tooltipped" data-tooltip="Cancelar" type="submit" name="action"><i class="material-icons right">close</i>
 		  									</button>
 	  									</form>
   									</div>
   									<div class="col right">
-	  									<form action="/properties/<%=session[:property_id]%>" method="post">
-											<input type="hidden" name="authenticity_token" value="form_authenticity_token">
-											<button class="cyan lighten-2 btn-floating btn-small waves-effect waves-light red right small right tooltipped" data-tooltip="Reagendar" type="submit" name="action"><i class="material-icons right">today</i>
+	  									<form>
+											<button id="update_trigger" class="cyan lighten-2 btn-floating btn-small waves-effect waves-light red right small right tooltipped" data-tooltip="Reagendar" type="submit" name="action"><i class="material-icons right">today</i>
 		  									</button>
 	  									</form>
   									</div>
@@ -89,56 +97,86 @@
 						</tbody>
 					</table>
 				</ul>
-				<% if @adds.length > 0 %>
-				<h5>Tus anuncios:</h5>
-					<div class="card-action">
-						<div class="row">
-							<% @adds.each do |add| %>
+				<h6 class="bold light-green-text text-darken-3">TUS ANUNCIOS</h6>
+				<div class="card-action">
+					<div class="row">
+						<% @adds.each do |add| %>
+							<% if add[:status] == "active" %>
 								<div class="col s2">
-									<a href="<%= add.url%>"><img src="/assets/<%=add.website%>.png" alt="" class="circle small responsive-img"></a>
+									<a href="<%= add[:url]%>"><img src="/assets/<%=add[:file]%>" alt="" class="circle small responsive-img"></a>
+								</div>
+							<% else %>
+								<div class="col s2">
+									<img src="/assets/<%=add[:file]%>" alt="" class="circle small responsive-img">
 								</div>
 							<% end %>
-						</div>
+						<% end %>
 					</div>
-				<% end %>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="primera col m3 offset-m2">
-		<h5>Tu agente:</h5>
-		<div class="card">
-			<div class="card-image waves-effect waves-block waves-light">
-			 	<img class="activator" src="/assets/<%= @agent.last_name %>.png">
+	<div class="primera col m5">
+		<div id="update_placeholder">
+			<div class="row">
+			<div class="row">
+				<div id="update"  class="card z-depth-1 col m8 offset-m4 white-text" style="display:none">
+					<div class="card-content">
+						<div class="row">
+							<span class="title bold">Selecciona la nueva fecha y hora</span>	
+						</div>
+						<form action="/appointments/<%=@appointment.id%>" method="post">
+							<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
+							<div class="row">
+								<div class="col 6s">
+									<input type="date" name="appointment[date]">
+								</div>
+								<div class="col 6s">
+									<select id="time" class="browser-default" name="appointment[time]">
+										<% @working_hours.each do |hour| %>
+											<option value="<%= hour %>"><%= hour %></option>
+										<% end %>
+									</select>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col s12">
+									<button class="light-green accent-4 btn-floating btn-small waves-effect waves-light right" type="submit"><i class="material-icons">send</i></button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
-			<div class="card-content">
-			 	<span class="card-title activator grey-text text-darken-4"><%=@agent.name%> <%= @agent.last_name%><i class="material-icons right">more_vert</i></span>
-				<p><i class="tiny material-icons">email</i> <a href="#"><%=@agent.email%></a></p>
-				<p><i class="tiny material-icons">phone</i> <a href="#"><%=@agent.mobile_phone%></a></p>
-				<div class="row right">
+			</div>
+		</div>
+		<div class="col m10 offset-m2">
+			<h6 class="bold light-green-text text-darken-3">TU AGENTE</h6>
+		</div>
+		<div class="card white lighten-4 z-depth-1 collection col m10 offset-m2">
+			<div id="agent-card-content" class="card-content">
+				<div class="row">
+					<div class="col s3">
+						<img src="/assets/<%=@agent.last_name %>.png" class="circle small responsive-img">
+					</div>
+				    <div class="row right">
 						<span>
-							<%=@agent.rating%>
 							<% @stars.times do %>
-								<div id="min-width" style="display:inline-block"><i class="light-green-text text-accent-4 tiny material-icons">star_rate</i></div>							
+								<div id="min-width" style="display:inline-block"><i class="bold light-green-text text-accent-4 tiny material-icons">star_rate</i></div>							
 							<% end %>
 							<% @blank_stars.times do %>
 								<div id="min-width" style="display:inline-block"><i class="grey-text text-lighten-2 tiny material-icons">star_rate</i></div>
 							<% end %>
-						</span>				
+							<%=@agent.rating.to_f %>
+						</span>	
+					</div>			
+					<div class="col s9">
+			      		<span class="title bold"><%=@agent.name%> <%= @agent.last_name%></span>
+						<p><i class="tiny material-icons">email</i> <a href="#"><%=@agent.email%></a></p>
+						<p><i class="tiny material-icons">phone</i> <a href="#"><%=@agent.mobile_phone%></a></p>
+		      		</div>
 				</div>
-			</div>
-			<div class="card-reveal">
-				<span class="card-title grey-text text-darken-4"><%=@agent.name%> <%= @agent.last_name%><i class="material-icons right">close</i></span>
-				<h6>Lo que otros usuarios comentan de <%= @agent.name %>:</h6>
-				<% if @agent_comments %>
-					<ul class="right">
-						<% @agent_comments.each do |comment| %>
-							<li>"<%= comment.content%>"</li>
-							<li class="light"><%= comment.created_at.strftime("%B, %Y")%></li>
-							<br>
-						<% end %>
-					</ul>
-				<% end %>
-			</div>
+	      	</div>
 		</div>
 	</div>
 </div>

@@ -34,6 +34,7 @@ gem 'materialize-sass'
 gem 'figaro'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
+gem "paperclip", "~> 4.2"
 # Use unicorn as the app server
 # gem 'unicorn'
 

@@ -103,7 +103,7 @@
 				<div id="appointment_errors"></div>
 				<form id="appointment_form">
 				<input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
-					<input type="date" name="appointment[date]">
+					<input type="date" datepicker name="appointment[date]">
 					<select id="time" class="browser-default" name="appointment[time]">
 						<% @working_hours.each do |hour| %>
 							<option value="<%= hour %>"><%= hour %></option>

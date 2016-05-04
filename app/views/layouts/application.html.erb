@@ -22,11 +22,11 @@
 	<meta name="msapplication-TileImage" content="/mstile-144x144.png">
 	<meta name="theme-color" content="#66cc33">
 	<title>Primera Raíz</title>
-  	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-  	<%= csrf_meta_tags %>
-  	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<%= csrf_meta_tags %>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link href="css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css" />
 	<script type="text/javascript">
 		var ready;
 		ready = function() {
@@ -66,36 +66,51 @@
 				})
 			})
 
-				// jQuery script for login_form
-				$(document).on("click", "#login_form", function() {
-					$('#login_form').submit(function() {
-						$.post(
-							'/users/login',
-							$(this).serialize(),
-							function(data) {
-								if ("property_id" in data) {
-									var property_id = data['property_id'];
-									url = "/properties/"+property_id;
-									$( location ).attr("href", url);
-								}
-								else {
-									$("#login_errors").html("<div class='row'><ul><li class='red-text'>" + data.error_message + "</li></ul></div>");
-								}
-							},
-							"json"
-						)
-						return false;
-					})
-				})
+			// jQuery script for login_form
+			$(document).on("click", "#login_form", function() {
+				$('#login_form').submit(function() {
+					$.post(
+						'/users/login',
+						$(this).serialize(),
+						function(data) {
+							if ("property_id" in data) {
+								var property_id = data['property_id'];
+								url = "/properties/"+property_id;
+								$( location ).attr("href", url);
+							}
+							else if ("user_id" in data) {
+								var user_id = data['user_id'];
+								url = "/properties/new";
+								$( location ).attr("href", url);
+							}
 
-				$(document).on(function(){
-					$('.tooltipped').tooltip({delay: 50});
-				});
+							else {
+								$("#login_errors").html("<div class='row'><ul><li class='red-text'>" + data.error_message + "</li></ul></div>");
+							}
+						},
+						"json"
+					)
+					return false;
+				})
+			})
+			$(document).on(function(){
+				$('.tooltipped').tooltip({delay: 50});
 			});
-		};
-		$(document).ready(ready);
-		$(document).on('page:load', ready);
-	</script>
+			$(document).ready(function(){
+		      $('.slider').slider({full_width: true, interval: 30000});
+		    });
+		    $(document).ready(function(){
+		    $('.modal-trigger').leanModal();
+  			});
+  			$('.datepicker').pickadate({
+			    selectMonths: true, // Creates a dropdown to control month
+			    selectYears: 15 // Creates a dropdown of 15 years to control year
+			 });
+		});
+	};
+	$(document).ready(ready);
+	$(document).on('page:load', ready);
+</script>
 </head>
 <body background="/assets/tiles.jpg">
 	<div class="navbar-fixed">

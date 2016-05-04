@@ -35,10 +35,14 @@ class UsersController < ApplicationController
 			if login_user
 				if login_user.authenticate(login_params[:password])
 					session[:user_id] = login_user[:id]
-					session[:property_id] = User.find(session[:user_id]).properties.last.id
-					format.json { render json: {property_id:"#{session[:property_id]}"} }			
+					if login_user.properties.any?
+						session[:property_id] = User.find(session[:user_id]).properties.last.id
+						format.json { render json: {property_id:"#{session[:property_id]}"} }
+					else
+						format.json { render json: {user_id:"#{session[:user_id]}"} }
+					end
 				else
-					format.json { render json: {error_message:"La onctraseña proporcionada no es válida"} }
+					format.json { render json: {error_message:"La contraseña proporcionada no es válida"} }
 				end
 			else
 				format.json { render json: {error_message:"Correo no registrado"} }

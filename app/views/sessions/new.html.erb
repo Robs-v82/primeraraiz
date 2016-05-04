@@ -7,9 +7,9 @@
 					<h5>Comisión del 2%,<br>profesional, fácil, seguro.</h5>
 				</div>
 				<div class="card-action center" id="card-action">
+	              <a href="/sessions/slider" target="_blank">Cómo funciona</a>
 	              <a href="#!" onclick="Materialize.showStaggeredList('#staggered-test')">Nosotros</a>
-	              <a href="#operacion">Cómo funciona</a>
-	              <a href="#colonias">Colonias</a>
+	              <a class="modal-trigger" href="#colonias">Colonias</a>
 	  			</div>
 	  		</div>
 			<ul class="collapsible form_within_card z-depth-0" data-collapsible="accordion">
@@ -61,8 +61,22 @@
       				</div>
     			</li>
     			<li>
-      				<div class="collapsible-header"><i class="material-icons">message</i>Pregúntanos</div>
-      				<div class="collapsible-body"><p>También puedes consultar nuestra sección de preguntas frecuentes,<br> o llamarnos al 5544545312.</p></div>
+      				<div class="collapsible-header">
+      					<i class="material-icons">message</i>Pregúntanos
+      				</div>
+      				<div class="collapsible-body">
+						<div class="row">
+							<form class="col s12">
+								<div class="row">
+									<div class="input-field col s12">
+										<textarea id="textarea1" class="materialize-textarea"></textarea>
+										<label for="textarea1">Pregunta</label>
+									</div>
+								</div>
+							</form>
+      						<p>También puedes consultar nuestra sección de preguntas frecuentes, o llamarnos al <a href="">5544545312</a>.</p>
+						</div>
+      				</div>
     			</li>
   			</ul>
 		</div>
@@ -70,7 +84,7 @@
 	<div id="login" class="text-column col m6"  style="display:none">
 		<div class="row">
 			<div id="login-card" class="card z-depth-2 col m10 right">
-				<div class="card-content">
+				<div class="white-text card-content">
 					<a href="#" onclick="login.style.display='none'"><i class="material-icons right">close</i></a>
 					<div class="card-form greent-text">
 						<div id="login_errors"></div>
@@ -126,12 +140,25 @@
 							<div class="col s8">
 					      		<span class="title bold">Roberto Valladares</span>
 					      		<p>Fundador de Primera Raíz</p>
-					      		</div>
-					      	</div>
-			      		</div>
+					      		<a href="https://www.linkedin.com/in/roberto-valladares-piedras-b12b8678?authType=NAME_SEARCH&authToken=rMOO&locale=es_ES&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A277625534%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1462217546297%2Ctas%3Aroberto%20va"><img src="/assets/linkedin.png" width="18" height="18"></a>
+				      		</div>
+				      	</div>
 		      		</div>
-				</li>
-			</ul>
-		</div>
+	      		</div>
+			</li>
+		</ul>
 	</div>
+</div>
+<div id="colonias" class="modal modal-fixed-footer">
+	<div class="modal-content">
+		<h4>Colonias en las que trabajamos</h4>
+		<ul class="collection">
+			<% @zonas.each do |zona| %>
+				<li class="collection-item"><%= zona %></li>
+			<% end %>
+		</ul>
+		</div><div class="modal-footer">
+		<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">cerrar</a>
+	</div>
+</div>
 

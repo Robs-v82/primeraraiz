@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 	end
 
 	def require_correct_user
-		if Property.find(params[:id]).user.id != session[:user_id]
+		if Property.find(session[:property_id]).user.id != session[:user_id]
 			redirect_to '/users/logout'
 		end
 	end
