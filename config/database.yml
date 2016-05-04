@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: primeraraiz4_production
-  username: playlist3
-  password: <%= ENV['PLAYLIST3_DATABASE_PASSWORD'] %>
+  username: primeraraiz4
+  password: <%= ENV['PRIMERARAIZ4_DATABASE_PASSWORD'] %>
