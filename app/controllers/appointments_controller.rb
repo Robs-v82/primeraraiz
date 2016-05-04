@@ -3,9 +3,6 @@ class AppointmentsController < ApplicationController
 	def create
 		appointment_info = appointment_params
 		appointment_info.store("property_id", session[:property_id])
-		pdf = StringIO.new(generate_pdf("appointments/contract.html.erb"))
-		puts 'XXxx'*100, pdf
-		appointment_info.store("avatar", pdf)
 		new_appointment = Appointment.new(appointment_info)
 		if new_appointment.valid?
 			new_appointment.save
